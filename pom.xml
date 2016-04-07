@@ -7,6 +7,15 @@
   <version>1.0-SNAPSHOT</version>
   <name>forum Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+  <!--使用jitpack.io导入github中不在maven中央仓库中的项目 website:https://jitpack.io-->
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -93,6 +102,12 @@
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.9</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.pusuo</groupId>
+      <artifactId>patchca</artifactId>
+      <version>d3e2b0b5ba</version>
     </dependency>
 
 
