@@ -56,4 +56,23 @@ public class UserService {
     public User findByEmail(String email) {
         return userDao.findByEmail(email);
     }
+
+    /**
+     * 用户登录
+     * @param userName
+     * @param password
+     * @return
+     */
+    public User login(String userName, String password,String ip) {
+        User user = findByUserName(userName);
+        if(user != null && user.getPassword().equals(DigestUtils.md5Hex(password + ConfigProp.get("user.password.salt")))) {
+            //登录成功
+            user.setLoginip(ip);
+            user.setLogintime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+
+            userDao.update(user);
+            return user;
+        }
+        return null;
+    }
 }
