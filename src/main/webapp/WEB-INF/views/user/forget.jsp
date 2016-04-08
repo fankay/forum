@@ -48,6 +48,7 @@
 <script>
     $(function(){
 
+
         $("#btn").click(function(){
             $("#forgetForm").submit();
         });

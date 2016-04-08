@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户登录</title>
+    <title>设置新密码</title>
     <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -15,43 +15,26 @@
 <div class="container">
     <div class="box">
         <div class="box-header">
-            <span class="title"><i class="fa fa-sign-in"></i> 登录</span>
+            <span class="title"><i class="fa fa-sign-in"></i> 设置新密码</span>
         </div>
-        <c:choose>
-            <c:when test="${param.state == '1002'}">
-                <div class="alert alert-success">你已经安全退出</div>
-            </c:when>
-            <c:when test="${param.state == '1003'}">
-                <div class="alert alert-success">密码设置成功，请重新登录</div>
-            </c:when>
-        </c:choose>
 
-        <form action="" class="form-horizontal" id="loginForm">
-
+        <form action="" class="form-horizontal" id="passwordForm">
+            <input type="hidden" name="token" value="${token}">
             <div class="control-group">
-                <label class="control-label">账号</label>
+                <label class="control-label">新密码</label>
                 <div class="controls">
-                    <input type="text" name="username">
+                    <input type="password" name="password" id="password">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">密码</label>
+                <label class="control-label">重复密码</label>
                 <div class="controls">
-                    <input type="password" name="password">
+                    <input type="password" name="repassword">
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label"></label>
-                <div class="controls">
-                    <a href="/forget/password.do">忘记密码</a>
-                </div>
-            </div>
-
             <div class="form-actions">
-                <button class="btn btn-primary" type="button" id="loginBtn">登录</button>
-                <a class="pull-right" href="/reg.do">注册账号</a>
+                <button class="btn btn-primary" type="button" id="setBtn">设置</button>
             </div>
-
         </form>
 
 
@@ -67,54 +50,61 @@
 
     $(function(){
 
-        $("#loginBtn").click(function(){
-            $("#loginForm").submit();
+        $("#setBtn").click(function(){
+            $("#passwordForm").submit();
         });
 
-        $("#loginForm").validate({
+        $("#passwordForm").validate({
             errorClass:"text-error",
             errorElement:"span",
             rules:{
-                username:{
-                    required:true
-                },
                 password:{
-                    required:true
+                    required:true,
+                    rangelength:[6,18]
+                },
+                repassword:{
+                    required:true,
+                    rangelength:[6,18],
+                    equalTo:"#password"
                 }
             },
             messages:{
-                username:{
-                    required:"请输入账号"
-                },
                 password:{
-                    required:"请输入密码"
+                    required:"请输入密码",
+                    rangelength:"密码长度6~18位"
+                },
+                repassword:{
+                    required:"请输入确认密码",
+                    rangelength:"密码长度6~18位",
+                    equalTo:"两次密码不一致"
                 }
             },
             submitHandler:function(form){
-                var $btn = $("#loginBtn");
+                var $btn = $("#setBtn");
                 $.ajax({
-                    url:"/login.do",
+                    url:"/forgetpassword/setpassword.do",
                     type:"post",
                     data:$(form).serialize(),
                     beforeSend:function(){
-                        $btn.text("登录中...").attr("disabled","disabled");
+                        $btn.text("设置中...").attr("disabled","disabled");
                     },
                     success:function(json){
-                        if(json.state == 'error') {
+                        if(json.state == "error") {
                             alert(json.message);
                         } else {
-                            window.location.href = "/index.do";
+                            window.location.href = "/login.do?state=1003"
                         }
                     },
                     error:function(){
-                        alert("服务器错误，请稍后再试");
+                        alert("服务器异常，请稍后再试");
                     },
                     complete:function(){
-                        $btn.text("登录").removeAttr("disabled");
+                        $btn.text("设置").removeAttr("disabled");
                     }
                 });
             }
         });
+
 
     });
 
