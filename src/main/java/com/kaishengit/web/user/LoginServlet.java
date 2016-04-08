@@ -33,9 +33,8 @@ public class LoginServlet extends BaseServlet {
             result.put("state","error");
             result.put("message","参数错误");
         } else {
-            String ip = req.getRemoteAddr(); //获取登录用户的IP地址
             UserService userService = new UserService();
-            User user = userService.login(userName,password,ip);
+            User user = userService.login(userName,password,getRemoteIp(req));
             if(user == null) {
                 result.put("state","error");
                 result.put("message","账号或密码错误");
