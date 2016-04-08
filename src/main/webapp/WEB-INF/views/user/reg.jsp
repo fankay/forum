@@ -43,7 +43,7 @@
                     <input type="text" name="email">
                 </div>
             </div>
-            <%--<div class="control-group">
+            <div class="control-group">
                 <label class="control-label">验证码</label>
                 <div class="controls">
                     <input type="text" name="code">
@@ -52,9 +52,9 @@
             <div class="control-group">
                 <label class="control-label"></label>
                 <div class="controls">
-                    <img src="" alt="">
+                    <a href="javascript:;" id="changePic"><img id="img" src="/patchca.png" alt=""></a>
                 </div>
-            </div>--%>
+            </div>
             <div class="form-actions">
                 <button type="button" id="regBtn" class="btn btn-primary">注册</button>
                 <span id="regMsg" class="hide">注册成功,<span class="sec">3</span>秒后自动跳转到登录页面</span>
@@ -76,6 +76,10 @@
         $("#regBtn").click(function(){
 
             $("#regForm").submit();
+        });
+
+        $("#changePic").click(function(){
+            $("#img").attr("src","/patchca.png?_="+new Date().getTime());
         });
 
         $("#regForm").validate({
@@ -101,6 +105,10 @@
                     required:true,
                     email:true,
                     remote:"/validate/email.do"
+                },
+                code:{
+                    required:true,
+                    remote:"/validate/patchca.do"
                 }
             },
             messages:{
@@ -123,6 +131,10 @@
                     required:"请输入电子邮件",
                     email:"电子邮件格式错误",
                     remote:"该电子邮件已注册"
+                },
+                code:{
+                    required:"请输入验证码",
+                    remote:"验证码错误"
                 }
             },
             submitHandler:function(form){
