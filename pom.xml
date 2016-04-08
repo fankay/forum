@@ -110,6 +110,13 @@
       <version>d3e2b0b5ba</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-email</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+
 
 
   </dependencies>

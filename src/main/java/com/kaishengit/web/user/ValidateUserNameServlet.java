@@ -15,6 +15,7 @@ public class ValidateUserNameServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
         String username = req.getParameter("username");
         username = new String(username.getBytes("ISO8859-1"),"UTF-8");
 
@@ -23,11 +24,18 @@ public class ValidateUserNameServlet extends BaseServlet {
 
         String result;
         if(user == null) {
-            result = "true";
+            if("forget".equals(action)) {
+                result = "false";
+            } else {
+                result = "true";
+            }
         } else {
-            result = "false";
+            if("forget".equals(action)) {
+                result = "true";
+            } else {
+                result = "false";
+            }
         }
-
         rendText(resp,result);
     }
 }
