@@ -156,4 +156,13 @@ public class UserService {
 
 
     }
+
+    public void updateUser(User user) {
+        userDao.update(user);
+    }
+
+    public void changePassword(User user, String password) {
+        user.setPassword(DigestUtils.md5Hex(password+ConfigProp.get("user.password.salt")));
+        updateUser(user);
+    }
 }

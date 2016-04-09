@@ -15,4 +15,17 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!--判断用户是否登录过滤器-->
+  <filter>
+    <filter-name>validateUserFilter</filter-name>
+    <filter-class>com.kaishengit.web.filter.ValidateUserFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>validateUserFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+
+
 </web-app>

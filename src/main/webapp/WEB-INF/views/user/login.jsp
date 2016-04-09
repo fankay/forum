@@ -18,6 +18,9 @@
             <span class="title"><i class="fa fa-sign-in"></i> 登录</span>
         </div>
         <c:choose>
+            <c:when test="${param.state == '1001'}">
+                <div class="alert alert-error">请登录后再继续操作</div>
+            </c:when>
             <c:when test="${param.state == '1002'}">
                 <div class="alert alert-success">你已经安全退出</div>
             </c:when>
@@ -103,7 +106,7 @@
                         if(json.state == 'error') {
                             alert(json.message);
                         } else {
-                            window.location.href = "/index.do";
+                            window.location.href = "${not empty param.redirecturl ? param.redirecturl : '/index.do'}";
                         }
                     },
                     error:function(){

@@ -1,6 +1,7 @@
 package com.kaishengit.web;
 
 import com.google.gson.Gson;
+import com.kaishengit.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +38,14 @@ public class BaseServlet extends HttpServlet {
             ip = "127.0.0.1";
         }
         return ip;
+    }
+
+    public boolean isAjaxRequest(HttpServletRequest request) {
+        return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+    }
+
+    public User getLoginUser(HttpServletRequest request) {
+        return (User) request.getSession().getAttribute("curr_user");
     }
 
 }

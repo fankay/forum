@@ -15,6 +15,7 @@ public class ValidateEmailServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
         String email = req.getParameter("email");
         email = new String(email.getBytes("ISO8859-1"),"UTF-8");
 
@@ -25,7 +26,13 @@ public class ValidateEmailServlet extends BaseServlet {
         if(user == null) {
             result = "true";
         } else {
-            result = "false";
+            //是不是和当前登录用户的地址相同
+            User loginUser = (User) req.getSession().getAttribute("curr_user");
+            if(loginUser != null && email.equals(loginUser.getEmail())) {
+                result = "true";
+            } else {
+                result = "false";
+            }
         }
 
         rendText(resp,result);
