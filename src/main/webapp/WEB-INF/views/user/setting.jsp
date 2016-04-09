@@ -142,6 +142,7 @@
                 if(json.state == "success") {
                     $(".avatar2").attr("src","http://7xs9b4.com1.z0.glb.clouddn.com/"+key+"?imageView2/1/w/40/h/40");
                     $(".avatar1").attr("src","http://7xs9b4.com1.z0.glb.clouddn.com/"+key+"?imageView2/1/w/20/h/20");
+                    uploader.removeFile(file,true);
                 }
             }).fail(function(){
                 alert("服务器忙，请稍后再试");
