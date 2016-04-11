@@ -13,7 +13,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href=""><i class="fa fa-plus"></i></a>
+                        <a href="/topic/new.do"><i class="fa fa-plus"></i></a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-bell"></i></a>
