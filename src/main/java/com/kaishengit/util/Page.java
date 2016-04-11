@@ -11,6 +11,12 @@ public class Page<T> {
     private int totalPages; //总页数
     private int totalCount; //总条数
 
+    /**
+     *
+     * @param pageNo 当前页号
+     * @param count 总记录数
+     * @param size 每页显示的数量
+     */
     public Page(String pageNo,int count,int size) {
         this.totalCount = count;
         this.size = size;
@@ -31,7 +37,7 @@ public class Page<T> {
         }
 
         //限制当前页码不得大于总页数
-        if(this.pageNo > this.totalPages) {
+        if(this.pageNo > this.totalPages && this.totalPages > 0) {
             this.pageNo = this.totalPages;
         }
 
@@ -39,6 +45,11 @@ public class Page<T> {
         this.start = (this.pageNo - 1) * size;
     }
 
+    /**
+     * 默认每页显示5条记录
+     * @param pageNo 当前页号
+     * @param count 总记录数
+     */
     public Page(String pageNo,int count) {
         this(pageNo,count,5);
     }

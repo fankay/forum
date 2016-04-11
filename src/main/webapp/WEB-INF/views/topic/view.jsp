@@ -9,6 +9,7 @@
     <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/js/editer/styles/simditor.css">
+    <link rel="stylesheet" href="/static/js/code/hemisu-light.css">
     <style>
         body{
             background-image: url(/static/img/bg.jpg);
@@ -25,12 +26,12 @@
     <div class="box">
         <ul class="breadcrumb" style="background-color: #fff;margin-bottom: 0px;">
             <li><a href="/index.do">首页</a> <span class="divider">/</span></li>
-            <li class="active">问与答</li>
+            <li class="active">${topic.node.nodename}</li>
         </ul>
         <div class="topic-head">
-            <img class="img-rounded avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/60/h/60" alt="">
+            <img class="img-rounded avatar" src="http://7xs9b4.com1.z0.glb.clouddn.com/${topic.user.avatar}?imageView2/1/w/60/h/60" alt="">
             <h3 class="title">${topic.title}</h3>
-            <p class="topic-msg muted"><a href="">fankay</a> · 9小时前 (${topic.createtime})</p>
+            <p class="topic-msg muted"><a href="">${topic.user.username}</a> · <span class="timeago" title="${topic.createtime}"></span> </p>
         </div>
         <div class="topic-body">
             ${topic.text}
@@ -165,10 +166,12 @@
 </div>
 <!--container end-->
 <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-<script src="js/editer/scripts/module.min.js"></script>
-<script src="js/editer/scripts/hotkeys.min.js"></script>
-<script src="js/editer/scripts/uploader.min.js"></script>
-<script src="js/editer/scripts/simditor.min.js"></script>
+<script src="/static/js/editer/scripts/module.min.js"></script>
+<script src="/static/js/editer/scripts/hotkeys.min.js"></script>
+<script src="/static/js/editer/scripts/uploader.min.js"></script>
+<script src="/static/js/editer/scripts/simditor.min.js"></script>
+<script src="/static/js/timeago.js"></script>
+<script src="/static/js/code/prettify.js"></script>
 <script>
     $(function(){
         var editor = new Simditor({
@@ -176,6 +179,12 @@
             toolbar:false
             //optional options
         });
+
+        $(".timeago").timeago();
+
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+
     });
 </script>
 

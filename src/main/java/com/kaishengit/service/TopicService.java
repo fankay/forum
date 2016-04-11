@@ -2,9 +2,12 @@ package com.kaishengit.service;
 
 import com.kaishengit.dao.NodeDao;
 import com.kaishengit.dao.TopicDao;
+import com.kaishengit.dao.UserDao;
 import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
+import com.kaishengit.util.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -13,6 +16,7 @@ public class TopicService {
 
     private NodeDao nodeDao = new NodeDao();
     private TopicDao topicDao = new TopicDao();
+    private UserDao userDao = new UserDao();
 
     public List<Node> findAllNode() {
         return nodeDao.findAll();
@@ -36,7 +40,42 @@ public class TopicService {
         return topicDao.save(topic);
     }
 
-    public Topic findTopicById(Integer id) {
-        return topicDao.findById(id);
+    public Topic viewTopic(Integer id) {
+        Topic topic = topicDao.findByIdLoadUserAndNode(id);
+        //User user = userDao.findById(topic.getUserid());
+        //Node node = nodeDao.findById(topic.getNodeid());
+
+        //topic.setNode(node);
+        //topic.setUser(user);
+
+        topic.setViewnum(topic.getViewnum() + 1);
+        topicDao.update(topic);
+
+        return topic;
+    }
+
+    public Page<Topic> showIndexTopic(String node,String pageNo) {
+
+        int pageSize = 20;
+        Page<Topic> page ;
+
+        if(StringUtils.isNumeric(node)) {
+            //filter
+            int count = topicDao.count(Integer.valueOf(node));
+            page = new Page<>(pageNo,count,pageSize);
+
+            List<Topic> topicList = topicDao.findByPage(Integer.valueOf(node),page.getStart(),page.getSize());
+            page.setItems(topicList);
+        } else {
+            //all
+            int count = topicDao.count();
+            page = new Page<>(pageNo,count,pageSize);
+
+            List<Topic> topicList = topicDao.findByPage(page.getStart(),page.getSize());
+            page.setItems(topicList);
+        }
+
+
+        return page;
     }
 }

@@ -20,7 +20,7 @@ public class ViewTopicServlet extends BaseServlet {
 
         if(StringUtils.isNumeric(id)) {
             TopicService topicService = new TopicService();
-            Topic topic = topicService.findTopicById(Integer.valueOf(id));
+            Topic topic = topicService.viewTopic(Integer.valueOf(id));
             req.setAttribute("topic",topic);
             forward(req,resp,"topic/view");
         } else {
