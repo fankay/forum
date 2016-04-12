@@ -37,11 +37,20 @@
             ${topic.text}
         </div>
         <div class="topic-toolbar">
-            <ul class="unstyled inline pull-left">
-                <li><a href="">加入收藏</a></li>
-                <li><a href="">感谢</a></li>
-                <li><a href=""></a></li>
-            </ul>
+            <c:if test="${not empty sessionScope.curr_user}">
+                <ul class="unstyled inline pull-left">
+                    <c:choose>
+                        <c:when test="${action == 'fav'}">
+                            <li><a href="javascript:;" class="fav">取消收藏</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="javascript:;" class="fav">加入收藏</a></li>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <li><a href="">感谢</a></li>
+                </ul>
+            </c:if>
             <ul class="unstyled inline pull-right muted">
                 <li>${topic.viewnum}次点击</li>
                 <li>${topic.favnum}人收藏</li>
@@ -228,6 +237,29 @@
             editor.focus();
             window.location.href="#new";
         });
+
+        //加入和取消收藏
+        $(".fav").click(function(){
+            var $this = $(this);
+            var action = $this.text() == "加入收藏" ? 'fav' : 'unfav';
+            $.post("/topic/fav.do",{"topicId":"${topic.id}","action":action}).done(function(result){
+                if(result.state == "error") {
+                    alert(result.message);
+                } else {
+                    if(action == "fav") {
+                        $this.text("取消收藏");
+                    } else {
+                        $this.text("加入收藏");
+                    }
+                }
+            }).fail(function(){
+                alert("服务器忙，请稍后再试");
+            });
+
+
+        });
+
+
     });
 </script>
 

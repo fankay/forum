@@ -1,12 +1,10 @@
 package com.kaishengit.service;
 
 import com.kaishengit.dao.CommentDao;
+import com.kaishengit.dao.FavDao;
 import com.kaishengit.dao.NodeDao;
 import com.kaishengit.dao.TopicDao;
-import com.kaishengit.entity.Comment;
-import com.kaishengit.entity.Node;
-import com.kaishengit.entity.Topic;
-import com.kaishengit.entity.User;
+import com.kaishengit.entity.*;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Page;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +17,7 @@ public class TopicService {
     private NodeDao nodeDao = new NodeDao();
     private TopicDao topicDao = new TopicDao();
     private CommentDao commentDao = new CommentDao();
+    private FavDao favDao = new FavDao();
 
     public List<Node> findAllNode() {
         return nodeDao.findAll();
@@ -113,5 +112,42 @@ public class TopicService {
 
     public List<Comment> findCommentListByTopicId(Integer topicId) {
         return commentDao.findAllLoadUserByTopicId(topicId);
+    }
+
+    /**
+     * 收藏或取消收藏主题
+     * @param topic
+     * @param user
+     * @param action
+     */
+    public void favTopic(Topic topic, User user, String action) {
+        Fav fav = favDao.findByTopicIdAndUserId(topic.getId(),user.getId());
+
+        if("fav".equals(action)) {
+            if(fav != null) {
+                throw new ServiceException("你已收藏该主题");
+            } else {
+                fav = new Fav();
+                fav.setUserid(user.getId());
+                fav.setTopicid(topic.getId());
+                fav.setCreatetime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+                favDao.save(fav);
+
+                topic.setFavnum(topic.getFavnum() + 1);
+                topicDao.update(topic);
+
+
+            }
+        } else {
+            if(fav != null) {
+                favDao.delete(fav);
+                topic.setFavnum(topic.getFavnum() - 1);
+                topicDao.update(topic);
+            }
+        }
+    }
+
+    public Fav findFavByUserIdAndTopicId(Integer userId, Integer topicId) {
+        return favDao.findByTopicIdAndUserId(topicId,userId);
     }
 }
