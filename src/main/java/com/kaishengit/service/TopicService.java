@@ -1,11 +1,13 @@
 package com.kaishengit.service;
 
+import com.kaishengit.dao.CommentDao;
 import com.kaishengit.dao.NodeDao;
 import com.kaishengit.dao.TopicDao;
-import com.kaishengit.dao.UserDao;
+import com.kaishengit.entity.Comment;
 import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
+import com.kaishengit.exception.ServiceException;
 import com.kaishengit.util.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -16,7 +18,7 @@ public class TopicService {
 
     private NodeDao nodeDao = new NodeDao();
     private TopicDao topicDao = new TopicDao();
-    private UserDao userDao = new UserDao();
+    private CommentDao commentDao = new CommentDao();
 
     public List<Node> findAllNode() {
         return nodeDao.findAll();
@@ -42,6 +44,11 @@ public class TopicService {
 
     public Topic viewTopic(Integer id) {
         Topic topic = topicDao.findByIdLoadUserAndNode(id);
+
+        if(topic == null) {
+            throw new ServiceException("该主题不存在或已被删除");
+        }
+
         //User user = userDao.findById(topic.getUserid());
         //Node node = nodeDao.findById(topic.getNodeid());
 
@@ -77,5 +84,27 @@ public class TopicService {
 
 
         return page;
+    }
+
+    public Topic findTopicById(Integer topicId) {
+        return topicDao.findById(topicId);
+    }
+
+    public Comment saveNewComment(String comment, Topic topic, User user) {
+        Comment commentObj = new Comment();
+        commentObj.setComment(comment);
+        commentObj.setCreatetime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        commentObj.setTopicid(topic.getId());
+        commentObj.setUserid(user.getId());
+
+        Integer id = commentDao.save(commentObj);
+        commentObj.setId(id);
+        commentObj.setUser(user);
+
+        return commentObj;
+    }
+
+    public List<Comment> findCommentListByTopicId(Integer topicId) {
+        return commentDao.findAllLoadUserByTopicId(topicId);
     }
 }

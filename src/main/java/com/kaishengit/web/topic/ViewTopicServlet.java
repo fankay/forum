@@ -1,6 +1,7 @@
 package com.kaishengit.web.topic;
 
 import com.kaishengit.entity.Topic;
+import com.kaishengit.exception.ServiceException;
 import com.kaishengit.service.TopicService;
 import com.kaishengit.web.BaseServlet;
 import org.apache.commons.lang3.StringUtils;
@@ -20,9 +21,14 @@ public class ViewTopicServlet extends BaseServlet {
 
         if(StringUtils.isNumeric(id)) {
             TopicService topicService = new TopicService();
-            Topic topic = topicService.viewTopic(Integer.valueOf(id));
-            req.setAttribute("topic",topic);
-            forward(req,resp,"topic/view");
+
+            try {
+                Topic topic = topicService.viewTopic(Integer.valueOf(id));
+                req.setAttribute("topic",topic);
+                forward(req,resp,"topic/view");
+            } catch (ServiceException ex) {
+                resp.sendError(404,ex.getMessage());
+            }
         } else {
             resp.sendError(404,"查看的内容不存在或已被删除");
         }

@@ -106,6 +106,8 @@
                         if(json.state == 'error') {
                             alert(json.message);
                         } else {
+                            //var hash = window.location.hash;
+                            //hash = hash | '';
                             window.location.href = "${not empty param.redirecturl ? param.redirecturl : '/index.do'}";
                         }
                     },

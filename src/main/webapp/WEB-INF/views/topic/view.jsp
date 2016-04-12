@@ -53,115 +53,34 @@
 
     <div class="box" style="margin-top:20px;">
         <div class="talk-item muted" style="font-size: 12px">
-            9个回复 | 直到2015年12月25日 22:23:34
+            <span id="replyNum"></span>个回复 | 直到 <span id="replyTime"></span>
         </div>
-        <div class="talk-item">
-            <table class="talk-table">
-                <tr>
-                    <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
-                    </td>
-                    <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px" class="reply">4小时前</span>
-                        <br>
-                        <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
-                    </td>
-                    <td width="70" align="right" style="font-size: 12px">
-                        <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                        <span class="badge">1</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="talk-item">
-            <table class="talk-table">
-                <tr>
-                    <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
-                    </td>
-                    <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px" class="reply">4小时前</span>
-                        <br>
-                        <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
-                    </td>
-                    <td width="70" align="right" style="font-size: 12px">
-                        <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                        <span class="badge">2</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="talk-item">
-            <table class="talk-table">
-                <tr>
-                    <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
-                    </td>
-                    <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px" class="reply">4小时前</span>
-                        <br>
-                        <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
-                    </td>
-                    <td width="70" align="right" style="font-size: 12px">
-                        <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                        <span class="badge">3</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="talk-item">
-            <table class="talk-table">
-                <tr>
-                    <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
-                    </td>
-                    <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px" class="reply">4小时前</span>
-                        <br>
-                        <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
-                    </td>
-                    <td width="70" align="right" style="font-size: 12px">
-                        <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                        <span class="badge">4</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="talk-item">
-            <table class="talk-table">
-                <tr>
-                    <td width="50">
-                        <img class="avatar" src="http://7xp5t4.com1.z0.glb.clouddn.com/Fqb8f9uDknAt2ilBoY-ipSZRMes-?imageView2/1/w/40/h/40" alt="">
-                    </td>
-                    <td width="auto">
-                        <a href="" style="font-size: 12px">fankay</a> <span style="font-size: 12px" class="reply">4小时前</span>
-                        <br>
-                        <p style="font-size: 14px">不知道国内有哪些公司开始用 react-native 了呢？我就知道天猫 Pad 版部分</p>
-                    </td>
-                    <td width="70" align="right" style="font-size: 12px">
-                        <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                        <span class="badge">50</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
+        <div id="comment-list"></div>
     </div>
 
-    <div class="box" style="margin:20px 0px;">
-        <div class="talk-item muted" style="font-size: 12px"><i class="fa fa-plus"></i> 添加一条新回复</div>
-        <form action="" style="padding: 15px;margin-bottom:0px;">
-            <textarea name="" id="editor"></textarea>
-        </form>
-        <div class="talk-item muted" style="text-align: right;font-size: 12px">
-            <span class="pull-left">请尽量让自己的回复能够对别人有帮助回复</span>
-            <button class="btn btn-primary">发布</button>
-        </div>
-    </div>
+    <c:choose>
+        <c:when test="${not empty sessionScope.curr_user}">
+            <div class="box" style="margin:20px 0px;">
+                <a name="new"></a>
+                <div class="talk-item muted" style="font-size: 12px"><i class="fa fa-plus"></i> 添加一条新回复</div>
+                <form id="commentForm" style="padding: 15px;margin-bottom:0px;">
+                    <textarea name="" id="editor"></textarea>
+                </form>
+                <div class="talk-item muted" style="text-align: right;font-size: 12px">
+                    <span class="pull-left">请尽量让自己的回复能够对别人有帮助回复</span>
+                    <button class="btn btn-primary" id="sendComment">发布</button>
+                </div>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="box" style="margin:20px 0px;">
+                <div style="padding: 20px">
+                    请 <a href="/login.do?redirecturl=/topic/view.do?id=${topic.id}">登录</a> 后在发表回复
+                </div>
+            </div>
+        </c:otherwise>
+    </c:choose>
+
 
 </div>
 <!--container end-->
@@ -172,18 +91,120 @@
 <script src="/static/js/editer/scripts/simditor.min.js"></script>
 <script src="/static/js/timeago.js"></script>
 <script src="/static/js/code/prettify.js"></script>
+<script src="/static/js/handlebars-v4.0.5.js"></script>
+<script src="/static/js/moment.min.js"></script>
+<script type="text/mytemplate" id="commentListTemplate">
+    {{#each data}}
+    <div class="talk-item">
+        <table class="talk-table">
+            <tr>
+                <td width="50">
+                    <img class="avatar" src="http://7xs9b4.com1.z0.glb.clouddn.com/{{user.avatar}}?imageView2/1/w/40/h/40" alt="">
+                </td>
+                <td width="auto">
+                    <a href="" style="font-size: 12px">{{user.username}}</a> <span style="font-size: 12px" class="reply">{{createtime}}</span>
+                    <br>
+                    {{{comment}}}
+                </td>
+                <td width="70" align="right" style="font-size: 12px">
+                    <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
+                    <span class="badge">{{@index}}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    {{/each}}
+</script>
 <script>
     $(function(){
+        <c:if test="${not empty sessionScope.curr_user}">
         var editor = new Simditor({
             textarea: $('#editor'),
             toolbar:false
-            //optional options
         });
+        $("#sendComment").click(function(){
+            var value = editor.getValue();
+            if(value) {
+                sendComment();
+            } else {
+                editor.focus();
+            }
+        });
+
+        function sendComment() {
+            var $btn = $("#sendComment");
+            $.ajax({
+                url:"/topic/comment/new.do",
+                type:"post",
+                data:{"comment":editor.getValue(),"topicId":"${topic.id}"},
+                beforeSend:function(){
+                    $btn.text("发布中...").attr("disabled","disabled");
+                },
+                success:function(json){
+                    if(json.state == "error") {
+                        alert(json.message);
+                    } else {
+                        initComment();
+                        editor.setValue("");
+                    }
+                },
+                error:function(){
+                    alert("服务器忙，请稍后再试");
+                },
+                complete:function(){
+                    $btn.text("发布").removeAttr("disabled");
+                }
+            });
+        }
+        </c:if>
+
+
+
+        //异步查询当前主题的所有评论
+        function initComment() {
+            $.ajax({
+                url:"/topic/comment/load.do",
+                type:"post",
+                data:{"topicId":"${topic.id}"},
+                beforeSend:function(){
+                    
+                },
+                success:function(json){
+                    if(json.state == "error") {
+                        alert(json.message);
+                    } else {
+                        $("#comment-list").html("");
+                        var source = $("#commentListTemplate").html();
+                        var template = Handlebars.compile(source);
+                        var html = template(json);
+                        $("#comment-list").append(html);
+
+                        $("#replyNum").text(json.data.length);
+                        if(json.data.length != 0) {
+                            $("#replyTime").text(json.data[json.data.length - 1].createtime);
+                        } else {
+                            $("#replyTime").text(moment().format("YYYY-MM-DD HH:mm:ss"));
+                        }
+                    }
+                },
+                error:function(){
+                    alert("服务器错误，请稍后再试");
+                },
+                complete:function(){
+                    
+                }
+            });
+        }
+
+
+
 
         $(".timeago").timeago();
 
         $("pre").addClass("prettyprint");
         prettyPrint();
+
+        initComment();
 
     });
 </script>
