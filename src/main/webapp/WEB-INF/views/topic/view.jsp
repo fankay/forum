@@ -96,22 +96,25 @@
 <script type="text/mytemplate" id="commentListTemplate">
     {{#each data}}
     <div class="talk-item">
+
         <table class="talk-table">
             <tr>
                 <td width="50">
                     <img class="avatar" src="http://7xs9b4.com1.z0.glb.clouddn.com/{{user.avatar}}?imageView2/1/w/40/h/40" alt="">
                 </td>
                 <td width="auto">
-                    <a href="" style="font-size: 12px">{{user.username}}</a> <span style="font-size: 12px" class="reply">{{createtime}}</span>
+                    <a href="" style="font-size: 12px">{{user.username}}</a> <span style="font-size: 12px" class="reply timeago" title="{{createtime}}"></span>
                     <br>
                     {{{comment}}}
+                    <a name="reply{{counter @index}}"></a>
                 </td>
                 <td width="70" align="right" style="font-size: 12px">
-                    <a href="" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
-                    <span class="badge">{{@index}}</span>
+                    <a href="javascript:;" class="replyLink" data-count="{{counter @index}}" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
+                    <span class="badge">{{counter @index}}</span>
                 </td>
             </tr>
         </table>
+
     </div>
     {{/each}}
 </script>
@@ -158,6 +161,9 @@
         }
         </c:if>
 
+        Handlebars.registerHelper("counter", function (index){
+            return index + 1;
+        });
 
 
         //异步查询当前主题的所有评论
@@ -179,12 +185,16 @@
                         var html = template(json);
                         $("#comment-list").append(html);
 
+                        //统计回复的数量
                         $("#replyNum").text(json.data.length);
+                        //最后回复的时间
                         if(json.data.length != 0) {
                             $("#replyTime").text(json.data[json.data.length - 1].createtime);
                         } else {
                             $("#replyTime").text(moment().format("YYYY-MM-DD HH:mm:ss"));
                         }
+
+                        $(".timeago").timeago();
                     }
                 },
                 error:function(){
@@ -206,6 +216,18 @@
 
         initComment();
 
+        //点击评论内容的回复超链接
+       /* $(document).delegate(".replyLink","click",function(){
+            var counter = $(this).attr("data-count");
+            alert("counter：" + counter );
+        });*/
+        $(document).on("click",".replyLink",function(){
+            var counter = $(this).attr("data-count");
+            var msg = "<a href='#reply"+counter+"'>#" + counter + "楼</a>&nbsp;&nbsp;";
+            editor.setValue(msg);
+            editor.focus();
+            window.location.href="#new";
+        });
     });
 </script>
 

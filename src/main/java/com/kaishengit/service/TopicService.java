@@ -91,15 +91,22 @@ public class TopicService {
     }
 
     public Comment saveNewComment(String comment, Topic topic, User user) {
+        String now = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+
         Comment commentObj = new Comment();
         commentObj.setComment(comment);
-        commentObj.setCreatetime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        commentObj.setCreatetime(now);
         commentObj.setTopicid(topic.getId());
         commentObj.setUserid(user.getId());
 
         Integer id = commentDao.save(commentObj);
         commentObj.setId(id);
         commentObj.setUser(user);
+
+        topic.setReplynum(topic.getReplynum() + 1);
+        topic.setReplytime(now);
+
+        topicDao.update(topic);
 
         return commentObj;
     }
