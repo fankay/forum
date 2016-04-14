@@ -5,6 +5,8 @@ import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
 import com.kaishengit.util.DBHelp;
+import com.kaishengit.util.EhCacheUtil;
+import com.kaishengit.util.SimpleCache;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -29,26 +31,34 @@ public class TopicDao {
     }
 
     public Topic findByIdLoadUserAndNode(Integer id) {
-        String sql = "SELECT t_topic.*,t_user.`username`,t_user.`avatar`,t_node.`nodename`FROM t_topic \n" +
-                "INNER JOIN t_user ON t_topic.`userid` = t_user.`id`\n" +
-                "INNER JOIN t_node ON t_topic.`nodeid` = t_node.`id`\n" +
-                "WHERE t_topic.`id` = ?";
-        return DBHelp.query(sql, new ResultSetHandler<Topic>() {
-            @Override
-            public Topic handle(ResultSet resultSet) throws SQLException {
-                if(resultSet.next()) {
-                    BasicRowProcessor rowProcessor = new BasicRowProcessor();
-                    Topic topic = rowProcessor.toBean(resultSet,Topic.class);
-                    User user = rowProcessor.toBean(resultSet,User.class);
-                    Node node = rowProcessor.toBean(resultSet,Node.class);
 
-                    topic.setUser(user);
-                    topic.setNode(node);
-                    return topic;
+        Topic topic = (Topic) EhCacheUtil.get("simpleCache","topic:"+id);
+        if(topic == null) {
+            String sql = "SELECT t_topic.*,t_user.`username`,t_user.`avatar`,t_node.`nodename`FROM t_topic \n" +
+                    "INNER JOIN t_user ON t_topic.`userid` = t_user.`id`\n" +
+                    "INNER JOIN t_node ON t_topic.`nodeid` = t_node.`id`\n" +
+                    "WHERE t_topic.`id` = ?";
+            topic = DBHelp.query(sql, new ResultSetHandler<Topic>() {
+                @Override
+                public Topic handle(ResultSet resultSet) throws SQLException {
+                    if (resultSet.next()) {
+                        BasicRowProcessor rowProcessor = new BasicRowProcessor();
+                        Topic topic = rowProcessor.toBean(resultSet, Topic.class);
+                        User user = rowProcessor.toBean(resultSet, User.class);
+                        Node node = rowProcessor.toBean(resultSet, Node.class);
+
+                        topic.setUser(user);
+                        topic.setNode(node);
+                        return topic;
+                    }
+                    return null;
                 }
-                return null;
-            }
-        }, id);
+            }, id);
+
+            EhCacheUtil.set("simpleCache","topic:" + id,topic);
+        }
+
+        return topic;
     }
 
     public void update(Topic topic) {

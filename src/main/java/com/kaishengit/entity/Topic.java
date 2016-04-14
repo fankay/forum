@@ -1,6 +1,8 @@
 package com.kaishengit.entity;
 
-public class Topic {
+import java.io.Serializable;
+
+public class Topic implements Serializable {
 
     private Integer id;
     private String title;
