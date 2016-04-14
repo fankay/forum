@@ -6,8 +6,12 @@ import com.kaishengit.exception.DataAccessException;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DBHelp {
+
+	private static Logger logger = LoggerFactory.getLogger(DBHelp.class);
 
 
     /**
@@ -19,9 +23,12 @@ public class DBHelp {
 	public static Long insert(String sql,Object... params) {
         QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
         try {
-            return queryRunner.insert(sql,new ScalarHandler<Long>(),params);
+            Long result = queryRunner.insert(sql,new ScalarHandler<Long>(),params);
+			logger.debug("SQL:{}",sql);
+			return result;
         } catch (SQLException e) {
             e.printStackTrace();
+			logger.error("执行{}异常",sql);
             throw new DataAccessException(e,"执行" + sql + "出现异常");
         }
     }
@@ -34,8 +41,10 @@ public class DBHelp {
 		QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
 		try {
 			queryRunner.update(sql,params);
+			logger.debug("SQL:{}",sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("执行{}异常",sql);
 			throw new DataAccessException(e,"SQL:" + sql);
 		}
 
@@ -47,9 +56,12 @@ public class DBHelp {
 	public static <T> T query(String sql,ResultSetHandler<T> handler,Object... params) {
 		QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
 		try {
-			return queryRunner.query(sql,handler,params);
+			T t = queryRunner.query(sql,handler,params);
+			logger.debug("SQL:{}",sql);
+			return t;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("执行{}异常",sql);
 			throw new DataAccessException(e,"SQL:" + sql);
 		}
 	}

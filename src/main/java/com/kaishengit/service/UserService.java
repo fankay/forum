@@ -11,11 +11,15 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 
 public class UserService {
+
+    private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private UserDao userDao = new UserDao();
     private ForgetPasswordDao forgetPasswordDao = new ForgetPasswordDao();
@@ -45,6 +49,7 @@ public class UserService {
         user.setState(User.USER_STATE_NORMAL);
 
         userDao.save(user);
+        logger.info("新注册用户{}",user.getUsername());
     }
 
     /**
@@ -79,6 +84,7 @@ public class UserService {
             user.setLogintime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
 
             userDao.update(user);
+            logger.info("{}登录成功",user.getUsername());
             return user;
         }
         return null;
